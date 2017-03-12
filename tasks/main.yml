@@ -1,0 +1,12 @@
+---
+- name: copy client config to node
+  copy:
+    src: /tmp/ansible/{{ ansible_fqdn }}/{{ hostvars[groups['lkcm-eu'][0]]['inventory_hostname'] }}.ovpn
+    dest: /etc/openvpn/{{ hostvars[groups['lkcm-eu'][0]]['inventory_hostname'] }}.conf
+
+- name: enable and start openvpn service
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    name: openvpn@{{ hostvars[groups['lkcm-eu'][0]]['inventory_hostname'] }}
+    state: started
